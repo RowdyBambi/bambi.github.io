@@ -1,40 +1,19 @@
 {{ define "main" }}
-  <section id="main">
-    <h1 id="title">{{ .Title }}</h1>
-    <div>
-      <article id="content">
-        {{ .Content }}
-      </article>
-    </div>
-  </section>
-  <aside id="meta">
-    <div>
-      <section>
-        <h4 id="date"> {{ .Date.Format "Mon Jan 2, 2006" }} </h4>
-        <h5 id="wordcount"> {{ .WordCount }} Words</h5>
-      </section>
-      {{ with .GetTerms "topics" }}
-        <ul id="topics">
-          {{ range . }}
-            <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
-          {{ end }}
-        </ul>
+  <main aria-role="main">
+    <header class="homepage-header">
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.subtitle }}
+        <span class="subtitle">{{ . }}</span>
       {{ end }}
-      {{ with .GetTerms "tags" }}
-        <ul id="tags">
-          {{ range . }}
-            <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
-          {{ end }}
-        </ul>
-      {{ end }}
+    </header>
+    <div class="homepage-content">
+      <!-- Note that the content for index.html, as a sort of list page, will pull from content/_index.md -->
+      {{ .Content }}
     </div>
     <div>
-      {{ with .PrevInSection }}
-        <a class="previous" href="{{ .RelPermalink }}"> {{ .LinkTitle }}</a>
-      {{ end }}
-      {{ with .NextInSection }}
-        <a class="next" href="{{ .RelPermalink }}"> {{ .LinkTitle }}</a>
+      {{ range first 10 .Site.RegularPages }}
+        {{ .Render "summary" }}
       {{ end }}
     </div>
-  </aside>
+  </main>
 {{ end }}
